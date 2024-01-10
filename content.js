@@ -1,5 +1,22 @@
 // content.js
 
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+  if (request.action === "retrieveData") {
+    // Detta kommer att köras i webbsidans kontext
+    let siteKeys = Object.keys(sessionStorage).filter((key) =>
+      key.startsWith("savedText")
+    );
+
+    let data = siteKeys.map((key) => ({
+      key,
+      value: sessionStorage.getItem(key),
+    }));
+
+    // Skicka datat tillbaka till bakgrundsfilen
+    sendResponse(data);
+  }
+});
+
 let isCKeyPressed = false;
 
 document.addEventListener("keydown", function (event) {
@@ -36,5 +53,12 @@ document.addEventListener("click", function (event) {
         event.preventDefault();
       }
     }
+  }
+});
+
+// Debugging code to log sessionStorage content
+document.addEventListener("keydown", function (event) {
+  if (event.key === "d") {
+    console.log("sessionStorage content:", sessionStorage);
   }
 });

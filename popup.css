@@ -1,0 +1,19 @@
+body {
+  background-color: aliceblue;
+  width: 50em;
+  height: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+tbody {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border: 2px solid;
+  border-radius: 10px;
+}
+button {
+  width: 6em;
+}

@@ -1,15 +1,22 @@
 <!-- popup.html -->
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Text Saver</title>
+    <link rel="stylesheet" href="popup.css" />
     <script src="popup.js"></script>
   </head>
-
   <body>
     <h1>Saved Text</h1>
 
-    <button id="copyButton">Copy Data</button>
+    <button id="getDataButton">Get Data</button>
+
+    <table id="savedTable">
+      <!-- Table content will be dynamically generated here -->
+    </table>
+    <button id="copyDataButton">Copy Data</button>
   </body>
 </html>

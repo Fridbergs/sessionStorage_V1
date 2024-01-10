@@ -2,12 +2,12 @@
 
 document.addEventListener("DOMContentLoaded", function () {
   displaySavedData();
-  document.getElementById("copyButton").addEventListener("click", copyData);
+  document.getElementById("getDataButton").addEventListener("click", getData);
 });
 
 function displaySavedData() {
   let savedTable = document.getElementById("savedTable");
-  savedTable.innerHTML = "<tr><th>Key</th><th>Value</th></tr>";
+  savedTable.innerHTML = "<tr><th>Value</th></tr>";
 
   // Iterate over sessionStorage keys for the specific site
   let siteKeys = Object.keys(sessionStorage).filter((key) =>
@@ -19,27 +19,23 @@ function displaySavedData() {
 
     let row = savedTable.insertRow(-1);
     let cell1 = row.insertCell(0);
-    let cell2 = row.insertCell(1);
 
-    cell1.innerHTML = key;
-    cell2.innerHTML = value;
+    cell1.innerHTML = value;
   }
 }
 
-function copyData() {
-  let savedData = "";
+function getData() {
+  chrome.runtime.sendMessage({ action: "getSavedData" }, function (response) {
+    let savedTable = document.getElementById("savedTable");
+    savedTable.innerHTML = "<tr><th>Value</th></tr>";
 
-  // Iterate over sessionStorage keys for the specific site
-  let siteKeys = Object.keys(sessionStorage).filter((key) =>
-    key.startsWith("savedText")
-  );
-  for (let i = 0; i < siteKeys.length; i++) {
-    let key = siteKeys[i];
-    let value = sessionStorage.getItem(key);
-    savedData += `${key}: ${value}\n`;
-  }
+    for (let i = 0; i < response.data.length; i++) {
+      let value = response.data[i].value;
 
-  navigator.clipboard.writeText(savedData).then(function () {
-    alert("Data copied to clipboard!");
+      let row = savedTable.insertRow(-1);
+      let cell1 = row.insertCell(0);
+
+      cell1.innerHTML = value;
+    }
   });
 }
