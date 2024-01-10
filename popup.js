@@ -3,11 +3,11 @@
 document.addEventListener("DOMContentLoaded", function () {
   displaySavedData();
   document.getElementById("getDataButton").addEventListener("click", getData);
+  document.getElementById("copyButton").addEventListener("click", copyData);
 });
 
 function displaySavedData() {
   let savedTable = document.getElementById("savedTable");
-  savedTable.innerHTML = "<tr><th>Value</th></tr>";
 
   // Iterate over sessionStorage keys for the specific site
   let siteKeys = Object.keys(sessionStorage).filter((key) =>
@@ -20,14 +20,15 @@ function displaySavedData() {
     let row = savedTable.insertRow(-1);
     let cell1 = row.insertCell(0);
 
-    cell1.innerHTML = value;
+    // Set the content of the cell directly to the value
+    cell1.textContent = value;
   }
 }
 
 function getData() {
   chrome.runtime.sendMessage({ action: "getSavedData" }, function (response) {
     let savedTable = document.getElementById("savedTable");
-    savedTable.innerHTML = "<tr><th>Value</th></tr>";
+    savedTable.innerHTML = ""; // Clear the table before populating with new data
 
     for (let i = 0; i < response.data.length; i++) {
       let value = response.data[i].value;
@@ -35,7 +36,23 @@ function getData() {
       let row = savedTable.insertRow(-1);
       let cell1 = row.insertCell(0);
 
-      cell1.innerHTML = value;
+      // Set the content of the cell directly to the value
+      cell1.textContent = value;
     }
+  });
+}
+
+function copyData() {
+  let savedData = "";
+
+  // Iterate over the displayed cells in the table
+  let cells = document.querySelectorAll("#savedTable td");
+  cells.forEach((cell) => {
+    savedData += cell.textContent.trim() + "\n";
+  });
+
+  // Copy the concatenated data to the clipboard
+  navigator.clipboard.writeText(savedData).then(function () {
+    alert("Data copied to clipboard!");
   });
 }

@@ -10,13 +10,18 @@
     <script src="popup.js"></script>
   </head>
   <body>
-    <h1>Saved Text</h1>
+    <div class="textDiv">
+      <h4>
+        Use this extension to copy key data that you have added to the session
+        storage by holding down "c" while clicking on the elements.
+      </h4>
+    </div>
+    <div>
+      <button id="getDataButton">Get Data</button>
 
-    <button id="getDataButton">Get Data</button>
-
-    <table id="savedTable">
-      <!-- Table content will be dynamically generated here -->
-    </table>
-    <button id="copyDataButton">Copy Data</button>
+      <table id="savedTable">
+        <!-- Table content will be dynamically generated here -->
+      </table>
+    </div>
   </body>
 </html>
